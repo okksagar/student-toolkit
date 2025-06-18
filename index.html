@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Student Toolkit</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #e0f7fa, #e1bee7);
+      color: #333;
+    }
+
+    header {
+      background-color: #4a148c;
+      color: white;
+      padding: 20px 40px;
+      text-align: center;
+      font-size: 2em;
+      font-weight: bold;
+    }
+
+    main {
+      padding: 30px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .tool-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      width: 100%;
+      max-width: 800px;
+      margin-top: 40px;
+    }
+
+    .tool-box {
+      background: white;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      border-radius: 12px;
+      padding: 30px 20px;
+      text-align: center;
+      text-decoration: none;
+      color: #4a148c;
+      font-size: 1.2em;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+
+    .tool-box:hover {
+      transform: translateY(-5px);
+      background-color: #f3e5f5;
+    }
+
+    footer {
+      margin-top: 60px;
+      text-align: center;
+      color: #888;
+      font-size: 0.9em;
+      padding: 20px;
+    }
+  </style>
+</head>
+<body>
+  <header>🎓 Student Toolkit</header>
+  <main>
+    <h2>Select a Tool</h2>
+    <div class="tool-grid">
+      <a href="sgpa.html" class="tool-box">SGPA to Percentage Converter</a>
+      <a href="resume.html" class="tool-box">Resume Builder</a>
+      <a href="cover-letter.html" class="tool-box">Cover Letter Writer</a>
+    </div>
+  </main>
+  <footer>© 2025 Student Toolkit by Sagar</footer>
+</body>
+</html>

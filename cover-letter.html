@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Cover Letter Generator</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #f0f4f8, #e0f7fa);
+      padding: 40px;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    h1 {
+      color: #1a237e;
+      margin-bottom: 25px;
+    }
+
+    form {
+      background: #fff;
+      padding: 30px;
+      border-radius: 12px;
+      width: 800px;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+    }
+
+    label {
+      font-weight: bold;
+      margin-top: 15px;
+      display: block;
+      color: #1a237e;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 10px;
+      margin-top: 6px;
+      margin-bottom: 16px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 14px;
+      background-color: #f9f9f9;
+    }
+
+    .btn, .toggle-btn {
+      background-color: #1a237e;
+      color: white;
+      padding: 10px 20px;
+      font-size: 15px;
+      font-weight: bold;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-right: 10px;
+    }
+
+    .output {
+      background: white;
+      width: 800px;
+      padding: 30px;
+      margin-top: 40px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      white-space: pre-wrap;
+      line-height: 1.6;
+    }
+
+    .btns {
+      margin-top: 20px;
+    }
+
+    #advancedFields {
+      display: none;
+      margin-top: 10px;
+      padding-top: 15px;
+      border-top: 1px solid #ccc;
+    }
+
+    .toggle-btn {
+      margin-top: 10px;
+      margin-bottom: 20px;
+      background: #607d8b;
+    }
+
+    .toggle-btn:hover {
+      background: #455a64;
+    }
+  </style>
+</head>
+<body>
+  <h1>Cover Letter Generator</h1>
+  <form id="coverForm">
+    <label>Your Name</label>
+    <input type="text" id="yourName" required>
+
+    <label>Job Title You're Applying For</label>
+    <input type="text" id="jobTitle" required>
+
+    <label>Company Name</label>
+    <input type="text" id="companyName" required>
+
+    <label>Why You're a Good Fit (sentence or keywords)</label>
+    <textarea id="fitReason" rows="3" required></textarea>
+
+    <button type="button" class="toggle-btn" onclick="toggleAdvanced()">🔽 Show Advanced Options</button>
+
+    <div id="advancedFields">
+      <label>Experience Summary (optional)</label>
+      <textarea id="experienceSummary" rows="3"></textarea>
+
+      <label>Key Skills (optional)</label>
+      <textarea id="skillsSummary" rows="2"></textarea>
+
+      <label>Where did you find the job? (optional)</label>
+      <input type="text" id="jobSource" placeholder="e.g. LinkedIn, Company Website">
+    </div>
+
+    <div class="btns">
+      <button type="button" class="btn" onclick="generateLetter()">Generate Letter</button>
+      <button type="button" class="btn" onclick="downloadLetter()">Download PDF</button>
+      <button type="button" class="btn" onclick="copyLetter()">Copy to Clipboard</button>
+    </div>
+  </form>
+
+  <div class="output" id="letterOutput" style="display:none;"></div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
+  <script>
+    function toggleAdvanced() {
+      const adv = document.getElementById("advancedFields");
+      const btn = document.querySelector(".toggle-btn");
+      if (adv.style.display === "none") {
+        adv.style.display = "block";
+        btn.innerText = "🔼 Hide Advanced Options";
+      } else {
+        adv.style.display = "none";
+        btn.innerText = "🔽 Show Advanced Options";
+      }
+    }
+
+    function smartWrapFitReason(reason) {
+      const trimmed = reason.trim();
+      const lower = trimmed.toLowerCase();
+      const isSentence = /^(i am|i'm|i have|i believe|because|due to|with|my)/.test(lower);
+      return isSentence ? trimmed : `I believe I am a great fit for this role because of my ${trimmed}.`;
+    }
+
+    function generateLetter() {
+      const name = document.getElementById('yourName').value.trim();
+      const job = document.getElementById('jobTitle').value.trim();
+      const company = document.getElementById('companyName').value.trim();
+      const reason = document.getElementById('fitReason').value.trim();
+      const experience = document.getElementById('experienceSummary').value.trim();
+      const skills = document.getElementById('skillsSummary').value.trim();
+      const source = document.getElementById('jobSource').value.trim();
+
+      const today = new Date().toLocaleDateString();
+      const fullReason = smartWrapFitReason(reason);
+
+      let body = `${fullReason}\n\n`;
+
+      if (experience) {
+        body += `In my previous roles, ${experience}\n\n`;
+      }
+
+      if (skills) {
+        body += `I bring with me skills such as ${skills} that directly contribute to this position.\n\n`;
+      }
+
+      body += `I am enthusiastic about the opportunity to contribute to your team and make a meaningful impact.\n`;
+
+      if (source) {
+        body += `I discovered this opportunity through ${source}, and it strongly resonated with my aspirations.\n`;
+      }
+
+      body += `\nThank you for considering my application. I would be glad to further discuss how I can support your team's goals.\n\n`;
+
+      const letter = `
+${today}
+
+To,  
+The Hiring Manager  
+${company}
+
+Subject: Application for the position of ${job}
+
+Dear Sir/Madam,
+
+I am writing to express my interest in the position of ${job} at ${company}.  
+${body}Sincerely,  
+${name}
+      `.trim();
+
+      document.getElementById('letterOutput').innerText = letter;
+      document.getElementById('letterOutput').style.display = 'block';
+    }
+
+    function copyLetter() {
+      const text = document.getElementById('letterOutput').innerText;
+      navigator.clipboard.writeText(text).then(() => {
+        alert("Letter copied to clipboard!");
+      });
+    }
+
+    function downloadLetter() {
+      const letterDiv = document.getElementById('letterOutput');
+      if (letterDiv.style.display === 'none') {
+        alert("Please generate the letter first.");
+        return;
+      }
+      html2pdf().set({
+        margin: 0.5,
+        filename: 'cover_letter.pdf',
+        image: { type: 'jpeg', quality: 1 },
+        html2canvas: { scale: 2 },
+        jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+      }).from(letterDiv).save();
+    }
+  </script>
+</body>
+</html>
