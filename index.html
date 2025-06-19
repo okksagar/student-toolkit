@@ -1,17 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- Open Graph Meta Tags for Link Preview -->
-<meta property="og:title" content="🎓 Student Toolkit – Resume Builder, SGPA Converter, Cover Letter Generator" />
-<meta property="og:description" content="Create resumes, convert SGPA to percentage, and generate cover letters — all in one place, free and online." />
-<meta property="og:image" content="https://okksagar.github.io/student-toolkit/preview.jpg" />
-<meta property="og:url" content="https://okksagar.github.io/student-toolkit/" />
-<meta property="og:type" content="website" />
-
-<meta name="title" content="Student Toolkit – Resume Builder, SGPA Converter, Cover Letter Generator">
-<meta name="description" content="Free online tools for students including SGPA to percentage converter, professional resume builder, and cover letter generator.">
-<meta name="keywords" content="student toolkit, resume builder, sgpa to percentage, cover letter generator, career tools, free resume, online student tools">
-
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Student Toolkit</title>
@@ -21,19 +10,38 @@
       font-family: 'Segoe UI', sans-serif;
       background: linear-gradient(to right, #e0f7fa, #e1bee7);
       color: #333;
+      text-align: center;
     }
 
     header {
       background-color: #4a148c;
       color: white;
       padding: 20px 40px;
-      text-align: center;
       font-size: 2em;
       font-weight: bold;
     }
 
+    .toggle-container {
+      margin-top: 30px;
+    }
+
+    .toggle-btn {
+      background-color: #6a1b9a;
+      color: white;
+      padding: 12px 25px;
+      font-size: 1em;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .toggle-btn:hover {
+      background-color: #4a148c;
+    }
+
     main {
-      padding: 30px;
+      padding: 20px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -45,7 +53,7 @@
       gap: 20px;
       width: 100%;
       max-width: 800px;
-      margin-top: 40px;
+      margin-top: 30px;
     }
 
     .tool-box {
@@ -58,7 +66,7 @@
       color: #4a148c;
       font-size: 1.2em;
       font-weight: bold;
-      transition: 0.3s;
+      transition: transform 0.2s, background-color 0.3s;
     }
 
     .tool-box:hover {
@@ -74,28 +82,43 @@
       padding: 20px;
     }
   </style>
-  <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-Y2P5752SSQ"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-Y2P5752SSQ');
-</script>
 </head>
 <body>
-  <header>🎓 Student Toolkit</header>
-  <main>
-    <h2>Select a Tool</h2>
-    <div class="tool-grid">
-      <a href="sgpa.html" class="tool-box">SGPA to Percentage Converter</a>
-      <a href="resume.html" class="tool-box">Resume Builder</a>
-      <a href="cover-letter.html" class="tool-box">Cover Letter Writer</a>
-	  <a href="application.html" class="tool-box">Application Letter Generator</a>
 
-    </div>
-  </main>
-  <footer>© 2025 Student Toolkit by Sagar</footer>
+<header>🎓 Student Toolkit</header>
+
+<div class="toggle-container">
+  <button class="toggle-btn" onclick="toggleTools()">Show: 😎 Other Tools</button>
+</div>
+
+<main>
+  <div id="studyTools" class="tool-grid">
+    <a href="sgpa.html" class="tool-box">SGPA to Percentage Converter</a>
+    <a href="resume.html" class="tool-box">Resume Builder</a>
+    <a href="application.html" class="tool-box">Application Letter Generator</a>
+    <a href="coverletter.html" class="tool-box">Cover Letter Writer</a>
+  </div>
+
+  <div id="funTools" class="tool-grid" style="display: none;">
+    <a href="excuse.html" class="tool-box">Excuse Generator 😈</a>
+	  <a href="life-crisis.html" class="tool-box">💥 Life Crisis Simulator</a>
+
+    <!-- Add more non-academic tools here -->
+  </div>
+</main>
+
+<footer>© 2025 Student Toolkit by Sagar</footer>
+
+<script>
+  let showFun = false;
+
+  function toggleTools() {
+    showFun = !showFun;
+    document.getElementById("studyTools").style.display = showFun ? "none" : "grid";
+    document.getElementById("funTools").style.display = showFun ? "grid" : "none";
+    document.querySelector(".toggle-btn").innerText = showFun ? "Show: 🧑‍🎓 Study Tools" : "Show: 😎 Other Tools";
+  }
+</script>
+
 </body>
 </html>

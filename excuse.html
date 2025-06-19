@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Excuse Generator</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body {
+      font-family: 'Segoe UI', cursive;
+      background: linear-gradient(to right, #f8bbd0, #b2ebf2);
+      padding: 40px 20px;
+      margin: 0;
+      text-align: center;
+      color: #333;
+    }
+
+    h1 {
+      font-size: 2.5em;
+      color: #880e4f;
+      margin-bottom: 10px;
+    }
+
+    .container {
+      background: white;
+      padding: 30px;
+      border-radius: 20px;
+      max-width: 700px;
+      margin: auto;
+      box-shadow: 0 0 20px rgba(0,0,0,0.1);
+      animation: fadeIn 0.5s ease;
+    }
+
+    @keyframes fadeIn {
+      from {opacity: 0; transform: scale(0.95);}
+      to {opacity: 1; transform: scale(1);}
+    }
+
+    select, button {
+      padding: 10px 15px;
+      margin: 10px;
+      font-size: 1em;
+      border-radius: 10px;
+      border: none;
+      background: #fce4ec;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    button:hover {
+      background: #f8bbd0;
+    }
+
+    .output {
+      margin-top: 25px;
+      padding: 20px;
+      background: #f3e5f5;
+      border-radius: 15px;
+      font-size: 1.2em;
+      color: #4a148c;
+      box-shadow: inset 0 0 10px #ccc;
+      min-height: 60px;
+    }
+
+    .copy-btn {
+      background: #4a148c;
+      color: white;
+      margin-top: 10px;
+    }
+
+    footer {
+      margin-top: 50px;
+      font-size: 0.9em;
+      color: #888;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>💥 Excuse Generator</h1>
+
+  <div class="container">
+    <label>
+      Select Type:
+      <select id="tone">
+        <option value="funny">Funny</option>
+        <option value="smart">Smart</option>
+        <option value="believable">Believable</option>
+        <option value="emergency">Emergency</option>
+      </select>
+    </label>
+
+    <label>
+      Select Context:
+      <select id="context">
+        <option value="class">Class</option>
+        <option value="office">Office</option>
+        <option value="party">Party</option>
+        <option value="family">Family</option>
+      </select>
+    </label>
+
+    <br />
+    <button onclick="generateExcuse()">Generate Excuse</button>
+
+    <div class="output" id="output">Your excuse will appear here 😈</div>
+    <button class="copy-btn" onclick="copyExcuse()">📋 Copy Excuse</button>
+  </div>
+
+  <footer>Built with chaos by Sagar 🔥</footer>
+
+  <script>
+    const data = {
+      funny: {
+        subjects: ["My dog", "My ceiling fan", "My neighbor", "My inner self", "My toaster", "My chair", "The air conditioner"],
+        actions: ["started a revolution", "fell in love with Siri", "hid my laptop", "changed my alarm", "turned off gravity", "locked me inside", "ate my notes"],
+        consequences: ["and I had to deal with it", "so I couldn't leave", "which caused total mental collapse", "leaving me emotionally damaged", "which I’m still recovering from"]
+      },
+      smart: {
+        subjects: ["I", "My brain", "My schedule", "My thoughts", "The universe"],
+        actions: ["re-evaluated productivity", "conducted a sleep study", "prioritized self-awareness", "ran a procrastination experiment", "observed social silence"],
+        consequences: ["which required complete isolation", "so I skipped the task intentionally", "and that’s how I learned efficiency", "as part of a personal research module"]
+      },
+      believable: {
+        subjects: ["My internet", "My laptop", "Public transport", "My power supply", "My router", "The weather"],
+        actions: ["stopped working", "got delayed", "crashed", "was unavailable", "failed"],
+        consequences: ["so I couldn’t make it", "and I missed the timing", "so I had to reschedule", "which prevented me from attending"]
+      },
+      emergency: {
+        subjects: ["A family member", "My neighbor", "My pet", "A medical situation", "A household accident"],
+        actions: ["had an emergency", "met with an accident", "got injured", "needed immediate care", "collapsed suddenly"],
+        consequences: ["so I rushed to help", "and I had no choice", "so I couldn’t inform earlier", "leaving me no time to explain"]
+      }
+    };
+
+    const contextEndings = {
+      class: "So I couldn't attend class.",
+      office: "So I couldn’t join work today.",
+      party: "So I skipped the party.",
+      family: "So I missed the family event."
+    };
+
+    function generateExcuse() {
+      const tone = document.getElementById("tone").value;
+      const context = document.getElementById("context").value;
+
+      const subject = randomItem(data[tone].subjects);
+      const action = randomItem(data[tone].actions);
+      const consequence = randomItem(data[tone].consequences);
+      const contextLine = contextEndings[context];
+
+      const excuse = `${subject} ${action}, ${consequence}. ${contextLine}`;
+      document.getElementById("output").innerText = excuse;
+    }
+
+    function randomItem(arr) {
+      return arr[Math.floor(Math.random() * arr.length)];
+    }
+
+    function copyExcuse() {
+      const excuse = document.getElementById("output").innerText;
+      navigator.clipboard.writeText(excuse).then(() => {
+        alert("Excuse copied to clipboard!");
+      });
+    }
+  </script>
+
+</body>
+</html>
