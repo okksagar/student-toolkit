@@ -26,7 +26,7 @@
       border-radius: 16px;
       box-shadow: 0 8px 20px rgba(0,0,0,0.15);
     }
-    select, button {
+    select, button, input {
       width: 100%;
       padding: 12px;
       font-size: 16px;
@@ -94,6 +94,7 @@
       border-radius: 16px;
       border: 4px solid #ddd;
       background: #fff;
+      text-align: center;
     }
   </style>
 </head>
@@ -101,6 +102,9 @@
 
 <h1>💥 Life Crisis Simulator</h1>
 <div class="container" id="startSection">
+  <label for="userName">Your Name</label>
+  <input type="text" id="userName" placeholder="Enter your name" />
+
   <label for="crisis">Select Your Crisis</label>
   <select id="crisis">
     <option value="">-- Choose a Life Situation --</option>
@@ -124,6 +128,9 @@
 <div class="container output" id="resultSection" style="display:none;"></div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script>
+let selectedCrisis = "";
+let userName = "";
+
 const questions = {
   breakup: [
     { q: "How often are you stalking your ex?", a: ["Never. I have self-respect (I lied)", "Just once... per hour", "They're blocked... but I made a fake account 😬"] },
@@ -234,11 +241,11 @@ const results = {
   }
 };
 
-let selectedCrisis = "";
-
 function loadQuiz() {
   selectedCrisis = document.getElementById("crisis").value;
+  userName = document.getElementById("userName").value.trim();
   if (!selectedCrisis) return alert("Please select a crisis.");
+  if (!userName) return alert("Please enter your name.");
 
   const form = document.getElementById("quizForm");
   form.innerHTML = "";
@@ -270,14 +277,14 @@ function generateResult() {
   document.getElementById("quizSection").style.display = "none";
 
   resultBox.innerHTML = `
-    <div id="resultCard" style="text-align:center;">
-      <div style="font-size: 48px;">${r.emoji}</div>
-      <h2>${r.title}</h2>
+    <div id="resultCard">
+   
+	  <h2>${userName}’s ${r.title} Report ${r.emoji}</h2>
       <p><strong>Crisis Level:</strong> ${r.level}</p>
       <p><strong>Diagnosis:</strong> ${r.diagnosis}</p>
       <p><strong>Suggested Fix:</strong> ${r.fix}</p>
       <p><strong>Quote:</strong> “${r.quote}”</p>
-      <div class="footer-tag">Generated with Life Crisis Simulator | SAGAR's Student-Toolkit</div>
+      <div class="footer-tag">Generated with 💀 by Life Crisis Simulator | yourwebsite.com</div>
     </div>
     <div class="share-buttons">
       <button onclick="shareImage()">📸 Download Report Image</button>
@@ -289,7 +296,11 @@ function generateResult() {
 
 function shareImage() {
   const node = document.getElementById("resultCard");
-  html2canvas(node).then(canvas => {
+  html2canvas(node, {
+    scale: 2,
+    backgroundColor: "#ffffff",
+    useCORS: true
+  }).then(canvas => {
     const link = document.createElement('a');
     link.download = 'life-crisis-report.png';
     link.href = canvas.toDataURL();
