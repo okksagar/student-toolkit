@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Smart Application Generator</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #fdfbfb, #e1f5fe);
+      padding: 40px;
+      margin: 0;
+      color: #333;
+    }
+    h1 {
+      text-align: center;
+      color: #1a237e;
+      margin-bottom: 30px;
+    }
+    form {
+      max-width: 700px;
+      margin: auto;
+      background: white;
+      padding: 25px 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    label {
+      font-weight: bold;
+      margin-top: 15px;
+      display: block;
+    }
+    select, input, textarea {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 14px;
+    }
+    .date-group {
+      display: flex;
+      gap: 10px;
+    }
+    .date-group input {
+      flex: 1;
+    }
+    button {
+      background-color: #1a237e;
+      color: white;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+      margin-top: 10px;
+    }
+    #output {
+      white-space: pre-wrap;
+      margin-top: 30px;
+      padding: 25px;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+
+<h1>Application Letter Generator</h1>
+
+<form id="appForm">
+  <label>Application Type</label>
+  <select id="type" required onchange="updateFields()">
+    <option value="">-- Select Type --</option>
+    <option value="formal">Formal</option>
+    <option value="informal">Informal</option>
+  </select>
+
+  <label>Who Are You?</label>
+  <select id="role" required>
+    <option value="">-- Select Role --</option>
+    <option value="student">Student</option>
+    <option value="professional">Professional</option>
+    <option value="general">General</option>
+  </select>
+
+  <label>Application Category</label>
+  <select id="category" required onchange="updateFields()">
+    <option value="">-- Select Category --</option>
+    <option value="leave">Leave Application</option>
+    <option value="complaint">Complaint Application</option>
+    <option value="request">Request Application</option>
+    <option value="invite">Invitation Letter</option>
+    <option value="thanks">Thank You Letter</option>
+  </select>
+
+  <label>Your Name</label>
+  <input type="text" id="sender" required />
+
+  <label>Recipient</label>
+  <input type="text" id="receiver" required />
+
+  <div id="subjectGroup">
+    <label>Subject / Purpose</label>
+    <input type="text" id="subject" />
+  </div>
+
+  <label>Details or Reason</label>
+  <textarea id="body" rows="4" required></textarea>
+
+  <div id="eventDateGroup" style="display:none">
+    <label>Event Date (for Invitations)</label>
+    <input type="text" id="eventDate" placeholder="e.g., 25 June 2025" />
+  </div>
+
+  <div class="date-group" id="dateRange">
+    <div>
+      <label>From Date</label>
+      <input type="text" id="fromDate" placeholder="e.g., 21 June 2025" />
+    </div>
+    <div>
+      <label>To Date</label>
+      <input type="text" id="toDate" placeholder="e.g., 23 June 2025" />
+    </div>
+  </div>
+
+  <div id="dateGroup">
+    <label>Date of Application</label>
+    <input type="text" id="currentDate" placeholder="e.g., 20 June 2025" />
+  </div>
+
+  <button type="button" onclick="generateApplication()">Generate Application</button>
+</form>
+
+<div id="output" style="display:none;"></div>
+
+<script>
+  function updateFields() {
+    const type = document.getElementById("type").value;
+    const category = document.getElementById("category").value;
+
+    // Subject visibility
+    document.getElementById("subjectGroup").style.display =
+      type === "formal" ? "block" : "none";
+
+    // From-To dates for Leave only
+    document.getElementById("dateRange").style.display =
+      category === "leave" ? "flex" : "none";
+
+    // Application date for formal only
+    document.getElementById("dateGroup").style.display =
+      type === "formal" ? "block" : "none";
+
+    // Event date for invitations only
+    document.getElementById("eventDateGroup").style.display =
+      category === "invite" ? "block" : "none";
+  }
+
+  function generateApplication() {
+    const type = document.getElementById("type").value;
+    const role = document.getElementById("role").value;
+    const category = document.getElementById("category").value;
+    const sender = document.getElementById("sender").value.trim();
+    const receiver = document.getElementById("receiver").value.trim();
+    const subject = document.getElementById("subject").value.trim();
+    const reason = document.getElementById("body").value.trim();
+    const from = document.getElementById("fromDate").value.trim();
+    const to = document.getElementById("toDate").value.trim();
+    const date = document.getElementById("currentDate").value.trim() || "[Date]";
+    const eventDate = document.getElementById("eventDate").value.trim();
+
+    let salutation = "";
+    let body = "";
+    let closing = "";
+    let fullLetter = "";
+
+    if (type === "formal") {
+      salutation = `To,\n${receiver}\n\n`;
+      if (subject) salutation += `Subject: ${subject}\n\n`;
+      salutation += `Respected Sir/Madam,\n\n`;
+
+      switch (category) {
+        case "leave":
+          body += `I am writing to request leave`;
+          if (from && to) body += ` from ${from} to ${to}`;
+          body += ` as ${reason}. `;
+          body += role === "student"
+            ? `I assure you that I will catch up on all missed lessons.`
+            : `I will ensure that all responsibilities are managed.`;
+          break;
+        case "complaint":
+          body = `I wish to bring to your notice the following concern: ${reason}. Kindly take necessary action.`;
+          break;
+        case "request":
+          body = `I am writing to request: ${reason}. I shall be grateful for your support.`;
+          break;
+        case "invite":
+          body = `I am pleased to invite you to ${reason}. The event is scheduled for ${eventDate}. Your presence would be an honor.`;
+          break;
+        case "thanks":
+          body = `I sincerely thank you for ${reason}. Your support means a lot.`;
+          break;
+      }
+
+      closing = `\n\nThank you for your consideration.\n\nYours faithfully,\n${sender}\nDate: ${date}`;
+      fullLetter = salutation + body + closing;
+
+    } else {
+      salutation = `Hi ${receiver},\n\n`;
+
+      switch (category) {
+        case "leave":
+          body = `Just a heads-up that I’ll be unavailable`;
+          if (from && to) body += ` from ${from} to ${to}`;
+          body += ` because ${reason}. Hope that’s okay.`;
+          break;
+        case "complaint":
+          body = `I just wanted to share this with you: ${reason}. Hope we can sort it out.`;
+          break;
+        case "request":
+          body = `Can you help me with this: ${reason}? Would really appreciate it.`;
+          break;
+        case "invite":
+          body = `You’re invited to ${reason}! It's on ${eventDate}. Hope you can make it.`;
+          break;
+        case "thanks":
+          body = `Thanks so much for ${reason}. It means a lot!`;
+          break;
+      }
+
+      closing = `\n\nRegards,\n${sender}`;
+      fullLetter = salutation + body + closing;
+    }
+
+    document.getElementById("output").innerText = fullLetter;
+    document.getElementById("output").style.display = "block";
+  }
+</script>
+
+</body>
+</html>
