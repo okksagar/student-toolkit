@@ -117,14 +117,42 @@
       to { opacity: 1; }
     }
     audio { display: none; }
-  </style>
+      .clouds {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      background: url('https://i.imgur.com/U5p4o8V.png') repeat-x;
+      animation: cloudScroll 60s linear infinite;
+      opacity: 0.4;
+      z-index: 1;
+    }
+
+    @keyframes softClouds {
+  from { background-position: 0 0; }
+  to { background-position: -2000px 0; }
+}
+      to { background-position: -2000px 0; }
+    }
+
+    .letter-page {
+      z-index: 2;
+    }
+</style>
 </head>
 <body>
-  <h1>💌 Letter from Your Younger Self</h1>
+  
+  </div>
+  <a href="inner-child.html" style="position:absolute; left:20px; top:20px; text-decoration:none; font-size:1em; color:#6b4e2f;">← Back to Home</a>
+
+<h1>💌 Reconnect with Your Inner Child</h1>
+<p style="text-align:center; font-size:1.4em; color:#5a4633; margin-top: -10px; font-weight:bold;">💭 Just One Click, One Memory</p>
   <div class="form-container" id="form">
     <label>Your Name:</label>
     <input id="name" type="text" placeholder="e.g., Sagar">
-    <label>Your Childhood Age:</label>
+    <label>Your Current Age:</label>
     <input id="age" type="number" placeholder="e.g., 23">
     <label>What was your childhood dream?</label>
     <input id="dream" type="text" placeholder="e.g., Astronaut">
@@ -139,7 +167,7 @@
       <option value="english">English</option>
       <option value="hinglish">Hinglish</option>
     </select>
-    <button onclick="generateLetter()">Generate Letter</button>
+    <button onclick="generateLetterWithScene()">Generate Letter</button>
   </div>
 
   <div class="letter-page" id="letterPage">
@@ -151,12 +179,17 @@
     <button id="downloadBtn" onclick="downloadLetter()">📥 Download Letter</button>
   </div>
   <div class="sparkles" id="sparkles" style="display: none;"></div>
+  <div class="clouds" id="clouds" style="display: none; background: linear-gradient(to bottom, rgba(255,255,255,0.6), rgba(255,255,255,0)); background-image: url('https://www.transparenttextures.com/patterns/clouds.png'); background-size: 800px auto; background-repeat: repeat-x; animation: softClouds 60s linear infinite;"></div>
 
   <audio id="bgMusic" loop muted autoplay>
     <source src="https://cdn.pixabay.com/download/audio/2022/10/18/audio_3f1ba68c31.mp3?filename=soft-piano-ambient-116200.mp3" type="audio/mp3">
   </audio>
 
   <script>
+    function startExperience() {
+      document.getElementById('introScene').style.display = 'none';
+      document.getElementById('form').scrollIntoView({ behavior: 'smooth' });
+    }
     function generateLetter() {
       const name = document.getElementById('name').value || 'Friend';
       const age = document.getElementById('age').value || '___';
@@ -169,10 +202,10 @@
       let letter;
 
       if (lang === 'hinglish') {
-        letter = `Hi. Main hoon — tum, Tumhara ${age} saal wala version.
+        letter = `Hi. Main hoon — tum, Jab tum sirf ${age} saal ke the.
 
 Tab sab kuch mumkin lagta tha.
-Hum banna ${dream} chahte the .
+Hum ${dream} banna chahte the .
 Hum sochte the life bhari hogi ${expectation} se — yaad hai?
 Hum happy endings mein believe karte the.
 
@@ -244,6 +277,7 @@ I always did.`;
       document.body.style.background = '#fffdf4';
       document.getElementById('letterPage').style.display = 'flex';
       document.getElementById('sparkles').style.display = 'block';
+      document.getElementById('clouds').style.display = 'block';
       document.getElementById('userName').textContent = name;
       document.getElementById('letterText').textContent = letter;
 
@@ -272,5 +306,35 @@ I always did.`;
     }
   </script>
   <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<div id="timeTravelOverlay" style="position:fixed;top:0;left:0;width:100vw;height:100vh;background:radial-gradient(circle at center, #fbeec1 0%, #d1c4a3 100%);display:none;align-items:center;justify-content:center;flex-direction:column;z-index:9999;animation:fadeInOut 6s ease forwards;">
+  <div style='width:180px;height:180px;background:#fcefc4;border-radius:50%;box-shadow:inset 0 0 20px #e1c98b, 0 0 30px #e1c98b;display:flex;align-items:center;justify-content:center;font-size:3em;color:#b48b45;'>🧒</div>
+  <p style="font-family:'Great Vibes',cursive;font-size:2em;color:#5a3e1a;text-align:center;max-width:600px;">Time bends. Smoke fades. A forgotten voice returns...</p>
+</div>
+
+<style>
+  @keyframes fadeInOut {
+    0% { opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { opacity: 0; display: none; }
+  }
+  @keyframes float {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(-15px); }
+    100% { transform: translateY(0); }
+  }
+</style>
+
+<script>
+  function generateLetterWithScene() {
+    const overlay = document.getElementById("timeTravelOverlay");
+    overlay.style.display = "flex";
+    setTimeout(() => {
+      overlay.style.display = "none";
+      generateLetter();
+    }, 6000);
+  }
+</script>
+
 </body>
 </html>
