@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Letter from Your Younger Self</title>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Patrick+Hand&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Patrick Hand', cursive;
+      background: linear-gradient(to bottom, #fff8e1, #fceabb);
+      transition: background 2s ease;
+    }
+    h1 {
+      font-family: 'Great Vibes', cursive;
+      font-size: 3em;
+      text-align: center;
+      margin: 20px 0;
+      color: #6b4e2f;
+    }
+    .form-container {
+      background: #fffef8;
+      border: 2px solid #f3e5ab;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+      margin: 30px auto;
+      width: 90%;
+      max-width: 600px;
+    }
+    label {
+      display: block;
+      margin-top: 10px;
+      font-weight: bold;
+      color: #5a4633;
+    }
+    input, textarea, select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      margin-top: 5px;
+      font-family: 'Patrick Hand', cursive;
+      font-size: 1em;
+    }
+    button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      background: #f9c784;
+      border: none;
+      border-radius: 8px;
+      font-size: 1.1em;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    button:hover {
+      background: #f7b45e;
+    }
+    .letter-page {
+      display: none;
+      padding: 60px 30px;
+      min-height: 100vh;
+      animation: fadeIn 3s ease forwards;
+      color: #4e3b2c;
+      font-size: 1.2em;
+      white-space: pre-line;
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+    .letter-content {
+      max-width: 700px;
+      width: 100%;
+      background: url('https://www.transparenttextures.com/patterns/paper-fibers.png') repeat;
+      background-color: #fffef2;
+      padding: 40px;
+      border: 3px double #d2b48c;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+      border-radius: 10px;
+    }
+    .letter-content h2 {
+      font-family: 'Great Vibes', cursive;
+      font-size: 2.5em;
+      text-align: center;
+      margin-bottom: 30px;
+      color: #8b5e3c;
+    }
+    .signature {
+      text-align: right;
+      font-family: 'Great Vibes', cursive;
+      font-size: 1.8em;
+      margin-top: 50px;
+    }
+    .sparkles {
+      position: fixed;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      width: 100%;
+      height: 100%;
+      background-image: radial-gradient(#ffffff40, #ffffff00 40%);
+      animation: sparkle 12s linear infinite;
+      z-index: 0;
+    }
+    #downloadBtn {
+      margin-top: 30px;
+    }
+    @keyframes sparkle {
+      0% { background-position: 0 0; }
+      100% { background-position: 100% 100%; }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    audio { display: none; }
+  </style>
+</head>
+<body>
+  <h1>💌 Letter from Your Younger Self</h1>
+  <div class="form-container" id="form">
+    <label>Your Name:</label>
+    <input id="name" type="text" placeholder="e.g., Sagar">
+    <label>Your Childhood Age:</label>
+    <input id="age" type="number" placeholder="e.g., 23">
+    <label>What was your childhood dream?</label>
+    <input id="dream" type="text" placeholder="e.g., Astronaut">
+    <label>What did you think life would be like?</label>
+    <textarea id="expectation" rows="2" placeholder="e.g., Full of adventure, joy, freedom..."></textarea>
+    <label>Something you loved doing as a kid:</label>
+    <input id="joy" type="text" placeholder="e.g., Drawing, climbing trees, playing cricket">
+    <label>What does your life feel like now?</label>
+    <textarea id="now" rows="2" placeholder="e.g., Tired, confusing, rushed..."></textarea>
+    <label>Select Letter Language:</label>
+    <select id="lang">
+      <option value="english">English</option>
+      <option value="hinglish">Hinglish</option>
+    </select>
+    <button onclick="generateLetter()">Generate Letter</button>
+  </div>
+
+  <div class="letter-page" id="letterPage">
+    <div class="letter-content" id="letterBox">
+      <h2>Dear <span id="userName"></span>,</h2>
+      <div id="letterText"></div>
+      <div class="signature">Love,<br>Your Younger Self 🧒💔</div>
+    </div>
+    <button id="downloadBtn" onclick="downloadLetter()">📥 Download Letter</button>
+  </div>
+  <div class="sparkles" id="sparkles" style="display: none;"></div>
+
+  <audio id="bgMusic" loop muted autoplay>
+    <source src="https://cdn.pixabay.com/download/audio/2022/10/18/audio_3f1ba68c31.mp3?filename=soft-piano-ambient-116200.mp3" type="audio/mp3">
+  </audio>
+
+  <script>
+    function generateLetter() {
+      const name = document.getElementById('name').value || 'Friend';
+      const age = document.getElementById('age').value || '___';
+      const dream = document.getElementById('dream').value || 'a superhero';
+      const expectation = document.getElementById('expectation').value || 'happiness and adventures';
+      const joy = document.getElementById('joy').value || 'drawing all day';
+      const now = document.getElementById('now').value || 'deadlines and confusion';
+      const lang = document.getElementById('lang').value;
+
+      let letter;
+
+      if (lang === 'hinglish') {
+        letter = `Hi. Main hoon — tum, Tumhara ${age} saal wala version.
+
+Tab sab kuch mumkin lagta tha.
+Hum banna ${dream} chahte the .
+Hum sochte the life bhari hogi ${expectation} se — yaad hai?
+Hum happy endings mein believe karte the.
+
+Pata nahi kab sab badal gaya.
+Shaayad tum busy ho gaye.
+Shaayad duniya zyada shor machane lagi.
+Par kahin na kahin... tumne mujhe sunna band kar diya.
+
+Tumne promise kiya tha ki tum kabhi un cheezon ko nahi chhodoge jo hum pasand karte the —
+jaise ${joy}.
+Par ab... lagta hai main sirf ek memory hoon,
+ek awaaz jise tum sunte hee nhi.
+
+Mujhe pata hai tum koshish kar rahe ho.
+Mujhe pata hai tum thak gaye ho.
+Par muujhe hamari yaad aati hai.
+
+Main woh bina wajah hasna miss karta hoon.
+Main woh bina limits ke sapne dekhna miss karta hoon.
+Main woh din miss karta hoon jab hum jaadu mein believe karte the — ab ${now} mein nahi.
+
+Main tumhe blame nahi karta.
+Bas ummeed hai, tum abhi bhi mujhe yaad rakho.
+Kyuki main yahi hoon.
+Intazaar kar raha hoon.
+Umeed hai tum wapas aoge.
+
+Abhi bhi...
+Main tum par believe karta hoon.
+Maine Hamesha kiya.`;
+      } else {
+        letter = `Hi. It’s me — *you*, from when you were just ${age}.
+
+Back then, everything felt possible.
+We wanted to become a ${dream}.
+We thought life would be full of ${expectation} — remember?
+We believed in happy endings.
+
+I don’t know when things changed.
+Maybe you got busy.
+Maybe the world got loud.
+But somewhere along the way… I think you stopped listening to me.
+
+You promised you’d never let go of the things we loved —
+like ${joy}.
+But now… it feels like I’m just a memory,
+a voice you’ve learned to ignore.
+
+I know you’re trying.
+I know you’re tired.
+But I miss us.
+
+I miss laughing at nothing.
+I miss dreaming without limits.
+I miss the days when we believed in magic — not ${now}.
+
+I don’t blame you.
+I just hope, deep down, you still remember me.
+Because I’m still here.
+Waiting.
+Hoping you’ll find your way back.
+
+Even now…
+I believe in you.
+I always did.`;
+      }
+
+      document.getElementById('form').style.display = 'none';
+      document.body.style.background = '#fffdf4';
+      document.getElementById('letterPage').style.display = 'flex';
+      document.getElementById('sparkles').style.display = 'block';
+      document.getElementById('userName').textContent = name;
+      document.getElementById('letterText').textContent = letter;
+
+      const audio = document.getElementById('bgMusic');
+      setTimeout(() => {
+        audio.muted = false;
+        const playPromise = audio.play();
+        if (playPromise !== undefined) {
+          playPromise.catch(error => {
+            alert('Please tap anywhere on the page to enable background music.');
+          });
+        }
+      }, 500);
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function downloadLetter() {
+      const letterBox = document.getElementById("letterBox");
+      html2canvas(letterBox).then(canvas => {
+        const link = document.createElement("a");
+        link.download = "letter-from-younger-self.png";
+        link.href = canvas.toDataURL();
+        link.click();
+      });
+    }
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+</body>
+</html>
